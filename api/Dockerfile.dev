@@ -1,13 +1,12 @@
-FROM node:17.9-alpine3.14
+FROM node:14-alpine as builder
 
-WORKDIR /api
-
+WORKDIR /build
 COPY package.json yarn.lock ./
 RUN yarn
 
 COPY . .
-RUN yarn build
+RUN  yarn build
 
 EXPOSE 5000
 
-CMD ["yarn", "start:dev"]
+CMD [ "yarn", "start"]
