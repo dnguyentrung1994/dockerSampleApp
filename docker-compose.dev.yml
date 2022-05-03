@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: api
+    restart: unless-stopped
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5000:5000
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api/src:/app/src
+    depends_on:
+      - postgres
+      - redis-db
+    networks:
+      - store-app
+
+  client:
+    container_name: client
+    restart: unless-stopped
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - ./client/.env
+    volumes:
+      - ./client/src:/app/src
+    depends_on:
+      - api
+    networks:
+      - store-app
+
+  postgres:
+    image: postgres:14.2-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=store
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/data/db
+    networks:
+      - store-app
+
+  redis-db:
+    image: redis:6.2.6-alpine
+    container_name: redis-db
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-db:/data
+    networks:
+      - store-app
+
+  nginx-proxy:
+    image: nginx:1.21.5-alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx-dev.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+      - client
+    networks:
+      - store-app
+
+volumes:
+  postgres:
+  redis-db:
+
+networks:
+  store-app:
