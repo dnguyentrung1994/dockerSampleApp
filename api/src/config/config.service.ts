@@ -1,6 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import 'dotenv/config';
+import { join } from 'path';
 
 interface RedisConfig {
   host: string;
@@ -42,7 +43,7 @@ class ConfigService {
       username: this.getRequiredValue('DATABASE_USER'),
       password: this.getRequiredValue('DATABASE_PASSWORD'),
       database: this.getRequiredValue('DATABASE_NAME'),
-      entities: ['../**/**.entity.{ts, js}'],
+      entities: [join(__dirname, '..', '**/*.entity.ts')],
       migrationsTableName: 'migration',
       migrations: ['./src/migration/*.{js,ts}'],
       // migrations: ['../migration/*.{js,ts}'],

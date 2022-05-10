@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindConditions, ObjectLiteral, Repository } from 'typeorm';
+import { UserRegisterDTO } from './user.dto';
 import { UserEntity } from './user.entity';
 
 @Injectable()
@@ -30,6 +31,17 @@ export class UserService {
       | FindConditions<UserEntity>[],
   ): Promise<UserEntity | undefined> {
     return await this.userRepository.findOne({ where: filter });
+  }
+
+  async addUser(userDTO: UserRegisterDTO) {
+    const query = await this.userRepository
+      .createQueryBuilder()
+      .insert()
+      .into(UserEntity)
+      .values([userDTO])
+      .returning('*')
+      .execute();
+    return query.generatedMaps[0] as UserEntity;
   }
 
   async deleteUser(

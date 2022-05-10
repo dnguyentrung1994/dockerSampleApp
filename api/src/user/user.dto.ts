@@ -22,7 +22,7 @@ export class UserRegisterDTO implements IRegisterUser {
   @ApiProperty({ description: 'user name' })
   @IsNotEmpty()
   @IsString()
-  userName: string;
+  username: string;
 
   @ApiProperty({ description: 'user password' })
   @IsNotEmpty()
@@ -46,7 +46,7 @@ export class UserRegisterDTO implements IRegisterUser {
 }
 
 export class UserLoginDTO extends PickType(UserRegisterDTO, [
-  'userName',
+  'username',
   'password',
 ]) {}
 
