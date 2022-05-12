@@ -1,13 +1,13 @@
 <template>
   <div class="sidebar-page">
     <section class="sidebar-layout">
-      <o-sidebar fullheight open>
-        <section style="padding: 1em">
-          <h5>Example 1</h5>
-          <h5>Example 2</h5>
-          <h5>Example 3</h5>
-          <h5>Example 4</h5>
-          <h5>Example 5</h5>
+      <o-sidebar fullheight open :reduce="reduce">
+        <section class="flex pt-8">
+          <div
+            class="bg-inherit hover:bg-white text-black font-normal inline-flex"
+          >
+            <o-icon pack="fas" icon="home"> </o-icon>
+          </div>
         </section>
       </o-sidebar>
     </section>
@@ -17,11 +17,22 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      reduce: true,
+      iconSizeStyle: "w-6 h-6",
+      iconMargin: "mr-4",
+    };
   },
+  props: ["displaySidebar"],
   watch: {
-    reduce() {
-      console.log(this.reduce);
+    displaySidebar: function (value) {
+      this.reduce = value;
+    },
+  },
+
+  methods: {
+    toggleSidebar() {
+      this.reduce = !this.reduce;
     },
   },
 };
@@ -33,6 +44,7 @@ export default {
   flex-direction: column;
   width: 100%;
   min-height: 100%;
+  transition: 300ms;
 }
 .sidebar-layout {
   display: flex;
