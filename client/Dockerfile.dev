@@ -1,0 +1,22 @@
+FROM node:lts as builder
+
+WORKDIR /client
+
+COPY . .
+
+RUN yarn install \
+  --prefer-offline \
+  --frozen-lockfile \
+  --non-interactive \
+  --production=false
+
+RUN yarn build
+
+FROM node:lts
+
+WORKDIR /client
+
+COPY --from=builder /client  .
+EXPOSE 3000
+
+CMD [ "yarn", "dev", "-o" ]

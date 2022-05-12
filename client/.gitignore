@@ -1,0 +1,8 @@
+node_modules
+.vscode
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
