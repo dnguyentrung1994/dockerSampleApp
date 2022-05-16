@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { IRegisterUser } from './user.interface';
+import { IRegisterUser } from './interface';
 
 export class UserRegisterDTO implements IRegisterUser {
   @ApiProperty({ description: 'first name ' })

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindConditions, ObjectLiteral, Repository } from 'typeorm';
-import { UserRegisterDTO } from './user.dto';
-import { UserEntity } from './user.entity';
+import { UserRegisterDTO } from '../dto';
+import { UserEntity } from '../user.entity';
 
 @Injectable()
-export class UserService {
+export class UserServiceQueries {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
@@ -44,33 +44,8 @@ export class UserService {
     return query.generatedMaps[0] as UserEntity;
   }
 
-  async deleteUser(
-    filter:
-      | string
-      | ObjectLiteral
-      | FindConditions<UserEntity>
-      | FindConditions<UserEntity>[],
-  ): Promise<{
-    status: 'NOT_FOUND' | 'ARD_DELETED' | 'SUCCEEDED';
-    context?: any;
-  }> {
-    return await this.getUser(filter).then(async (result) => {
-      if (!result) {
-        return {
-          status: 'NOT_FOUND',
-        };
-      } else if (result?.deletedAt) {
-        return {
-          status: 'ARD_DELETED',
-          context: result,
-        };
-      } else {
-        const deleted = await this.userRepository.softRemove(result);
-        return {
-          status: 'SUCCEEDED',
-          context: deleted,
-        };
-      }
-    });
+  async softDeleteUser(user: UserEntity) {
+    const query = await this.userRepository.softRemove(user);
+    return query;
   }
 }

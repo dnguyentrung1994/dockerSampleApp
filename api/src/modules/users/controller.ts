@@ -1,15 +1,20 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   Logger,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
-import { hashPassword } from 'src/auth/auth.utils';
-import { UserRegisterDTO } from './user.dto';
-import { UserService } from './user.service';
+import { JwtAuthGuard } from '../auth/auth-guard/jwt.guard';
+import { ILoginRequest } from '../auth/interface';
+import { hashPassword } from '../auth/utils';
+import { UserRegisterDTO } from './dto';
+import { UserService } from './services';
 
 @Controller('user')
 export class UserController {
@@ -17,6 +22,12 @@ export class UserController {
     private readonly userService: UserService,
     private readonly logger: Logger,
   ) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Req() req: ILoginRequest) {
+    return req.user;
+  }
 
   @Post()
   async createUser(
