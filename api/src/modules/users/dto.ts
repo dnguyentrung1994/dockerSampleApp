@@ -43,6 +43,10 @@ export class UserRegisterDTO implements IRegisterUser {
   @IsOptional()
   @IsMobilePhone(['ja-JP'])
   telephone?: string | undefined;
+
+  @ApiProperty({ description: 'admin authentication' })
+  @IsOptional()
+  adminAuth?: string;
 }
 
 export class UserLoginDTO extends PickType(UserRegisterDTO, [
@@ -50,4 +54,7 @@ export class UserLoginDTO extends PickType(UserRegisterDTO, [
   'password',
 ]) {}
 
-export class UserInfoDTO extends OmitType(UserRegisterDTO, ['password']) {}
+export class UserInfoDTO extends OmitType(UserRegisterDTO, [
+  'password',
+  'adminAuth',
+]) {}

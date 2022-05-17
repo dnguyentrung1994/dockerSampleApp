@@ -61,6 +61,10 @@ class ConfigService {
     };
   }
 
+  public getAdminVerification() {
+    return this.getRequiredValue('ADMIN_VERIFICATION');
+  }
+
   public getApiPort() {
     return Number(this.getRequiredValue('API_PORT'));
   }

@@ -7,10 +7,8 @@ import {
   Post,
   Req,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
-import { JwtAuthGuard } from '../auth/auth-guard/jwt.guard';
 import { ILoginRequest } from '../auth/interface';
 import { hashPassword } from '../auth/utils';
 import { UserRegisterDTO } from './dto';
@@ -23,7 +21,6 @@ export class UserController {
     private readonly logger: Logger,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Req() req: ILoginRequest) {
     return req.user;

@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../../users/user.entity';
 import { IRegisterUser } from '../../users/interface';
-import { comparePassword } from '../utils';
+import { comparePassword, hashPassword } from '../utils';
 import { UserServiceQueries } from 'src/modules/users/services/queries';
 import { ITokenPayload } from '../interface';
 import { AuthServiceJWTHandler } from './jwtHandler';
+import { UserRegisterDTO } from 'src/modules/users/dto';
+import { mapUserEntityToUserInfoDTO } from 'src/modules/users/services/mapper';
+import { configService } from 'src/config/config.service';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +36,66 @@ export class AuthService {
     return await this.userServiceQueries.getUser({ username });
   }
 
-  async login(user: IRegisterUser) {
-    return await this.jwtHandler.generateJwtToken(user.username);
+  login(user: IRegisterUser) {
+    return this.jwtHandler.generateJwtToken(user.username);
+  }
+
+  async registerUser({
+    firstName,
+    lastName,
+    username,
+    password,
+    email,
+    address,
+    telephone,
+    adminAuth,
+  }: UserRegisterDTO): Promise<{
+    status:
+      | 'NO_CONTACT'
+      | 'USER_EXISTS'
+      | 'ADMIN_VERIFICATION_INVALID'
+      | 'CREATED';
+    context?: any;
+  }> {
+    try {
+      const context: any = {};
+      if (!email && !address && !telephone)
+        return {
+          status: 'NO_CONTACT',
+        };
+
+      if (await this.userServiceQueries.getUser({ username }))
+        return {
+          status: 'USER_EXISTS',
+        };
+
+      if (adminAuth) {
+        if (adminAuth !== configService.getAdminVerification()) {
+          return {
+            status: 'ADMIN_VERIFICATION_INVALID',
+          };
+        } else {
+          context.isAdmin = true;
+        }
+      }
+      const hashedPassword = await hashPassword(password);
+      const newUser = await this.userServiceQueries.addUser({
+        firstName,
+        lastName,
+        username,
+        password: hashedPassword,
+        email,
+        address,
+        telephone,
+      });
+      context.tokens = this.login(newUser);
+      context.userInfo = mapUserEntityToUserInfoDTO(newUser);
+      return {
+        status: 'CREATED',
+        context,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -10,6 +10,7 @@ import { AuthController } from './controller';
 import { AuthService } from './services';
 import { UserServiceQueries } from '../users/services/queries';
 import { AuthServiceJWTHandler } from './services/jwtHandler';
+import { JwtStrategy } from './auth-strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthServiceJWTHandler } from './services/jwtHandler';
   providers: [
     AuthService,
     LocalStrategy,
+    JwtStrategy,
     UserServiceQueries,
     Logger,
     AuthServiceJWTHandler,
