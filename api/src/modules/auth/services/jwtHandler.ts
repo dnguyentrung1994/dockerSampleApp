@@ -7,7 +7,7 @@ import { IJwtToken, ITokenPayload } from '../interface';
 export class AuthServiceJWTHandler {
   constructor(private readonly jwtService: JwtService) {}
 
-  generateJwtToken(username): IJwtToken {
+  generateJwtToken(username: string): IJwtToken {
     const payload: ITokenPayload = { username };
     const accessJwtConfig = configService.getAccessJWTSettings();
     const refreshJwtConfig = configService.getRefreshJWTSettings();

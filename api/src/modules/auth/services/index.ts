@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { UserEntity } from '../../users/user.entity';
 import { IRegisterUser } from '../../users/interface';
 import { comparePassword, hashPassword } from '../utils';
@@ -8,12 +8,15 @@ import { AuthServiceJWTHandler } from './jwtHandler';
 import { UserRegisterDTO } from 'src/modules/users/dto';
 import { mapUserEntityToUserInfoDTO } from 'src/modules/users/services/mapper';
 import { configService } from 'src/config/config.service';
+import { Cache } from 'cache-manager';
+import { getUnixTime } from 'date-fns';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userServiceQueries: UserServiceQueries,
     private readonly jwtHandler: AuthServiceJWTHandler,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async validateUser(
@@ -97,5 +100,12 @@ export class AuthService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async blockJwt(jwt: string, exp: number) {
+    const ttl = exp - getUnixTime(new Date());
+    await this.cacheManager.set(`BLOCKED_JWT_${jwt}`, true, {
+      ttl,
+    });
   }
 }

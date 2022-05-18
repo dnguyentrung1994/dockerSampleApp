@@ -11,10 +11,11 @@ import {
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { LocalAuthGuard } from './auth-guard/local.guard';
-import { ILoginRequest } from './interface';
+import { ILoginRequest, IToken } from './interface';
 import { AuthService } from './services';
 import { Public } from './decorators';
 import { UserRegisterDTO } from '../users/dto';
+import jwtDecode from 'jwt-decode';
 
 @Controller('auth')
 export class AuthController {
@@ -64,11 +65,12 @@ export class AuthController {
         throw new BadRequestException(registerResult.status);
 
       res.setCookie(
-        'refresh_token',
+        'refreshToken',
         registerResult.context.tokens.refreshToken,
         {
           httpOnly: true,
           maxAge: 24 * 60 * 60 * 1000,
+          path: 'api/refresh-token',
         },
       );
       return res.status(HttpStatus.OK).send({
@@ -76,6 +78,40 @@ export class AuthController {
         userInfo: registerResult.context.userInfo,
       });
     } catch (error: any) {
+      if (error.statusCode >= 500) this.logger.error(error);
+      throw error;
+    }
+  }
+
+  @Post('logout')
+  async logout(@Req() req: ILoginRequest, @Res() res: FastifyReply) {
+    try {
+      const accessToken: IToken | undefined = req.headers.authorization
+        ? jwtDecode(req.headers.authorization)
+        : undefined;
+      const refreshToken: IToken | undefined = req.cookies?.refreshToken
+        ? jwtDecode(req.cookies.refreshToken)
+        : undefined;
+
+      if (accessToken)
+        this.authService.blockJwt(
+          req.headers.authorization ?? '',
+          accessToken.exp,
+        );
+      if (refreshToken)
+        this.authService.blockJwt(
+          req.cookies.refreshToken ?? '',
+          refreshToken.exp,
+        );
+
+      res.clearCookie('refreshToken', {
+        path: 'api/refresh-token',
+      });
+
+      return res.status(HttpStatus.OK).send({
+        message: 'Logged out',
+      });
+    } catch (error) {
       if (error.statusCode >= 500) this.logger.error(error);
       throw error;
     }
