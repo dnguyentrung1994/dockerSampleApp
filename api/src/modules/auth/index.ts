@@ -17,7 +17,7 @@ import { JwtStrategy } from './auth-strategy/jwt.strategy';
     TypeOrmModule.forFeature([UserEntity]),
     UserModule,
     PassportModule,
-    JwtModule.register(configService.getRefreshJWTSettings()),
+    JwtModule.register(configService.getAccessJWTSettings()),
   ],
   providers: [
     AuthService,

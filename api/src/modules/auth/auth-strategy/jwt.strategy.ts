@@ -13,9 +13,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
-          console.log(
-            request.cookies.refreshToken ?? request.headers.authorization,
-          );
+          // console.log(
+          //   request.cookies.refreshToken ?? request.headers.authorization,
+          // );
           return request.cookies.refreshToken ?? request.headers.authorization;
         },
       ]),
@@ -26,6 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: ITokenPayload): Promise<UserInfoDTO> {
     try {
+      console.log('aaaaaa');
       const user = await this.authService.validateViaJwtToken(payload);
       if (!user) throw new BadRequestException('ユーザー情報不正');
       return mapUserEntityToUserInfoDTO(user);

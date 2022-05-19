@@ -22,8 +22,13 @@ export class UserController {
   ) {}
 
   @Get('profile')
-  getProfile(@Req() req: ILoginRequest) {
-    return req.user;
+  getProfile(@Req() req: ILoginRequest, @Res() res: FastifyReply) {
+    return res.status(HttpStatus.OK).send(req.user);
+  }
+
+  @Get('hello')
+  helloUser(@Res() res: FastifyReply) {
+    return res.status(HttpStatus.OK).send({ message: 'hello' });
   }
 
   @Post()
