@@ -13,20 +13,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
-          // console.log(
-          //   request.cookies.refreshToken ?? request.headers.authorization,
-          // );
-          return request.cookies.refreshToken ?? request.headers.authorization;
+          return request.headers.authorization ?? '';
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.getRefreshJWTSettings().privateKey,
+      secretOrKey: configService.getAccessJWTSettings().privateKey,
     });
   }
 
   async validate(payload: ITokenPayload): Promise<UserInfoDTO> {
     try {
-      console.log('aaaaaa');
       const user = await this.authService.validateViaJwtToken(payload);
       if (!user) throw new BadRequestException('ユーザー情報不正');
       return mapUserEntityToUserInfoDTO(user);

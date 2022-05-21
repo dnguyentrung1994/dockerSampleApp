@@ -86,6 +86,7 @@ export class AuthController {
   @Post('logout')
   async logout(@Req() req: ILoginRequest, @Res() res: FastifyReply) {
     try {
+      console.log('aaaa');
       const accessToken: IToken | undefined = req.headers.authorization
         ? jwtDecode(req.headers.authorization)
         : undefined;

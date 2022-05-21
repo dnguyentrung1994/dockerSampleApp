@@ -9,7 +9,7 @@ import {
 import { Cache } from 'cache-manager';
 import { catchError, Observable, throwError } from 'rxjs';
 
-export class jwtCheckInterceptor implements NestInterceptor {
+export class JwtCheckInterceptor implements NestInterceptor {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
   async intercept(
     context: ExecutionContext,
