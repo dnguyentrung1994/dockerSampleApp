@@ -1,7 +1,13 @@
 <template>
   <div class="sidebar-page">
     <section class="sidebar-layout">
-      <o-sidebar fullheight open :reduce="reduce">
+      <o-sidebar
+        position="absolute"
+        fullheight
+        open
+        :reduce.sync="reduce"
+        :mobile="mobile"
+      >
         <section class="flex pt-8">
           <div
             class="bg-inherit hover:bg-white text-black font-normal inline-flex"
@@ -21,6 +27,7 @@ export default {
       reduce: true,
       iconSizeStyle: "w-6 h-6",
       iconMargin: "mr-4",
+      mobile: "reduced",
     };
   },
   props: ["displaySidebar"],

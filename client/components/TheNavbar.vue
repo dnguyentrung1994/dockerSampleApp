@@ -4,7 +4,7 @@
       <div class="navbar-item">
         <button
           variant="primary"
-          class="bg-black text-white font-normal py-2 px-4 rounded inline-flex items-center hover:bg-gray-600"
+          class="bg-black text-white font-normal py-2 px-4 rounded inline-flex items-center hover:bg-gray-600 transition-all"
           :class="displaySidebar ? buttonSizeFull : buttonSizeReduced"
           @click="toggleSidebar"
         >
@@ -43,7 +43,7 @@ export default {
     return {
       displaySidebar: false,
       buttonSizeReduced: "w-20",
-      buttonSizeFull: "w-65",
+      buttonSizeFull: "w-[260px]",
     };
   },
   watch: {
