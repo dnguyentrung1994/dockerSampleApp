@@ -12,7 +12,7 @@ import {
   WinstonModule,
 } from 'nest-winston';
 import * as winston from 'winston';
-import { AppModule } from './app.module';
+import { AppModule } from './modules';
 import { configService } from './config/config.service';
 import { HttpExceptionFilter } from './utils/exception-filter';
 import { filterOnly } from './utils/winston-level-filter';
@@ -59,9 +59,6 @@ async function bootstrap() {
       }),
     },
   );
-
-  //set 'api' as global prefix
-  app.setGlobalPrefix('api');
 
   //setting up swagger
   const swaggerDocument = SwaggerModule.createDocument(
