@@ -5,14 +5,16 @@
         position="absolute"
         fullheight
         open
-        :reduce.sync="reduce"
+        :reduce="reduce"
         :mobile="mobile"
       >
-        <section class="flex pt-8">
+        <section class="flex pt-20">
           <div
             class="bg-inherit hover:bg-white text-black font-normal inline-flex"
           >
-            <o-icon pack="fas" icon="home"> </o-icon>
+            <NuxtLink to="/">
+              <o-icon pack="fas" icon="home"> HOME </o-icon>
+            </NuxtLink>
           </div>
         </section>
       </o-sidebar>

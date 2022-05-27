@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="sticky flex top-0 min-w-full bg-black align-middle z-40 h-10">
+    <div
+      class="sticky flex top-0 min-w-full bg-black align-middle z-40 h-10 justify-between"
+    >
       <div class="navbar-item">
         <button
           variant="primary"
@@ -32,6 +34,10 @@
           <span :hidden="!displaySidebar">Placeholder</span>
         </button>
       </div>
+      <o-field class="max-w-[500px] space-x-8">
+        <o-input placeholder="Search..." expanded></o-input>
+        <o-button variant="primary">Search</o-button>
+      </o-field>
     </div>
     <TheSidebar :displaySidebar="!displaySidebar" />
   </div>
