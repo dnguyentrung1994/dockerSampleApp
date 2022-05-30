@@ -1,9 +1,10 @@
 <template>
   <div
-    class="fixed top-0 bottom-0 left-0 right-0 flex content-center bg-[#000000da] z-50 justify-center items-center"
+    class="modal-overlay fixed top-0 bottom-0 left-0 right-0 flex content-center bg-[#000000da] z-50 justify-center items-center"
+    @click="cancelModal"
   >
     <div
-      class="text-center bg-white h-fit w-[50%] rounded-2xl z-[60] min-w-[400px]"
+      class="login-form text-center bg-white h-fit w-[50%] rounded-2xl z-[60] min-w-[400px] max-w-[400px]"
     >
       <form action="">
         <div
@@ -151,8 +152,7 @@ export default {
   },
   emits: ["closeLoginModal"],
   methods: {
-    emitClose(e) {
-      e.preventDefault();
+    emitClose() {
       this.$emit("closeLoginModal");
     },
     showPassword() {
@@ -160,6 +160,11 @@ export default {
     },
     hidePassword() {
       this.passwordType = "password";
+    },
+    cancelModal(payload) {
+      if (payload.target.classList.contains("modal-overlay")) {
+        this.emitClose();
+      }
     },
   },
 };
