@@ -58,6 +58,7 @@
         <button
           variant="primary"
           class="bg-black text-white font-normal py-2 px-4 inline-flex items-center hover:bg-gray-600 transition-all pl-4 border-r-2 border-solid border-white"
+          @click="toggleRegister"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +79,15 @@
       </div>
     </div>
     <TheSidebar :displaySidebar="!displaySidebar" />
-    <the-login-form v-show="loginClicked" @closeLoginModal="toggleLogin" />
+    <Transition name="login-form">
+      <the-login-form v-show="loginClicked" @closeLoginModal="toggleLogin" />
+    </Transition>
+    <Transition name="register-form">
+      <the-register-form
+        v-show="registerClicked"
+        @closeRegisterModal="toggleRegister"
+      />
+    </Transition>
   </div>
 </template>
 
@@ -92,22 +101,19 @@ export default {
       buttonSizeReduced: "w-20",
       buttonSizeFull: "w-[260px]",
       loginClicked: false,
+      registerClicked: false,
     };
   },
-  watch: {
-    displaySidebar() {
-      console.log(this.displaySidebar);
-    },
-    loginClicked() {
-      console.log(this.loginClicked);
-    },
-  },
+
   methods: {
     toggleSidebar() {
       this.displaySidebar = !this.displaySidebar;
     },
     toggleLogin() {
       this.loginClicked = !this.loginClicked;
+    },
+    toggleRegister() {
+      this.registerClicked = !this.registerClicked;
     },
   },
 };
@@ -126,6 +132,19 @@ export default {
 }
 .navbar-item {
   display: flex;
+}
+.login-form-enter-active,
+.login-form-leave-active,
+.register-form-enter-active,
+.register-form-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.login-form-enter-from,
+.login-form-leave-to,
+.register-form-enter-from,
+.register-form-leave-to {
+  opacity: 0;
 }
 </style>
 >

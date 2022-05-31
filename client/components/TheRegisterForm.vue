@@ -6,14 +6,14 @@
     <div
       class="login-form text-center bg-white h-fit w-[50%] rounded-2xl z-[60] min-w-[400px] max-w-[400px]"
     >
-      <form action="" @submit.prevent="login">
+      <form action="">
         <div
           class="login-form-header flex flex-col max-h-[calc(100vh-40px)] overflow-hidden pt-2 pb-4"
         >
           <div
             class="flex flex-row justify-between relative content-center border-b-[1px] min-h-[15%]"
           >
-            <span class="text-lg font-semibold pl-[45%]">Login</span>
+            <span class="text-lg font-semibold pl-[45%]">Register</span>
             <button @click="emitClose" type="button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -32,6 +32,7 @@
             </button>
           </div>
           <div class="login-form-content flex flex-col pb-6">
+            <!-- Username field -->
             <div
               class="flex flex-col content-start justify-start items-start pt-4"
             >
@@ -60,24 +61,12 @@
                   autocomplete="off"
                   placeholder="Your username"
                   required="required"
-                  class="placeholder:italic placeholder:text-slate-400 rounded-sm py-2 pl-9 pr-2 border-2 w-full sm:text-sm"
-                  :class="
-                    loginMessage.username !== ''
-                      ? 'border-red-400 focus:border-red-500 focus:!outline-none'
-                      : 'border-black focus:border-blue-600 focus:!outline-none'
-                  "
-                  v-model="loginData.username"
+                  class="placeholder:italic placeholder:text-slate-400 rounded-sm py-2 pl-9 pr-2 border-black border-2 w-full sm:text-sm"
                 />
               </div>
-              <Transition name="username-message">
-                <span
-                  v-show="loginMessage.username !== ''"
-                  class="pl-4 text-base text-red-400"
-                  >{{ loginMessage.username }}</span
-                >
-              </Transition>
             </div>
 
+            <!-- Password field -->
             <div
               class="flex flex-col content-start justify-start items-start pt-4"
             >
@@ -106,20 +95,13 @@
                   autocomplete="off"
                   placeholder="Your password"
                   required="required"
-                  class="placeholder:italic placeholder:text-slate-400 rounded-sm py-2 pl-9 pr-2 border-2 w-full sm:text-sm"
-                  :class="
-                    loginMessage.password !== ''
-                      ? 'border-red-400 focus:border-red-500 focus:!outline-none'
-                      : 'border-black focus:border-blue-600 !outline-none'
-                  "
-                  v-model="loginData.password"
+                  class="placeholder:italic placeholder:text-slate-400 rounded-sm py-2 pl-9 pr-2 border-black border-2 w-full sm:text-sm"
                 />
                 <button
                   type="button"
                   class="absolute inset-y-0 right-6 flex items-center pl-2"
                   @mousedown="showPassword"
                   @mouseup="hidePassword"
-                  tabindex="-1"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -136,13 +118,60 @@
                   </svg>
                 </button>
               </div>
-              <Transition name="password-message">
-                <span
-                  v-show="loginMessage.password !== ''"
-                  class="pl-4 text-base text-red-400"
-                  >{{ loginMessage.password }}</span
+            </div>
+
+            <!-- Confirm Password -->
+            <div
+              class="flex flex-col content-start justify-start items-start pt-4"
+            >
+              <span class="text-base pl-9">Confirm Password</span>
+              <div class="px-4 relative block w-full">
+                <span class="absolute inset-y-0 left-4 flex items-center pl-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </span>
+                <input
+                  :type="confirmPasswordType"
+                  name="password"
+                  id="password"
+                  autocomplete="off"
+                  placeholder="Your password"
+                  required="required"
+                  class="placeholder:italic placeholder:text-slate-400 rounded-sm py-2 pl-9 pr-2 border-black border-2 w-full sm:text-sm"
+                />
+                <button
+                  type="button"
+                  class="absolute inset-y-0 right-6 flex items-center pl-2"
+                  @mousedown="showConfirmedPassword"
+                  @mouseup="hideConfirmPassword"
                 >
-              </Transition>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -150,15 +179,9 @@
             class="login-form-confirm flex flex-row pt-4 border-t justify-end pb-4"
           >
             <button
-              class="px-4 mx-4 border-2 rounded border-hidden text-base h-8"
+              class="px-4 mx-4 border-2 rounded bg-blue-500 hover:bg-blue-400 border-hidden text-base h-8"
               type="submit"
-              :disabled="disableSubmit"
-              :class="
-                disableSubmit
-                  ? ' bg-gray-400 hover:pointer-events-none transition-all'
-                  : 'bg-blue-500 hover:bg-blue-400 transition-all'
-              "
-              @submit.prevent="login"
+              @submit.prevent=""
             >
               Login
             </button>
@@ -181,25 +204,23 @@ export default {
   data() {
     return {
       passwordType: "password",
-      loginData: {
+      confirmPasswordType: "password",
+      registerInfo: {
         username: "",
         password: "",
+        confirmPassword: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        adminCheck: false,
+        adminAuth: "",
       },
-      loginMessage: {
-        username: "Username is required",
-        password: "Password is required",
-      },
-      disableSubmit: true,
     };
   },
-  emits: ["closeLoginModal"],
+  emits: ["closeRegisterModal"],
   methods: {
     emitClose() {
-      this.$emit("closeLoginModal");
-      this.loginData = {
-        username: "",
-        password: "",
-      };
+      this.$emit("closeRegisterModal");
     },
     showPassword() {
       this.passwordType = "text";
@@ -207,61 +228,17 @@ export default {
     hidePassword() {
       this.passwordType = "password";
     },
+    showConfirmedPassword() {
+      this.confirmPasswordType = "text";
+    },
+    hideConfirmPassword() {
+      this.confirmPasswordType = "password";
+    },
     cancelModal(payload) {
       if (payload.target.classList.contains("modal-overlay")) {
         this.emitClose();
       }
     },
-    login() {
-      console.log(this.loginData);
-    },
-  },
-  watch: {
-    "loginData.username"() {
-      if (this.loginData.username === "") {
-        this.loginMessage.username = "Username is required";
-      } else {
-        this.loginMessage.username = "";
-      }
-    },
-    "loginData.password"() {
-      if (this.loginData.password === "") {
-        this.loginMessage.password = "Password is required";
-      } else if (this.loginData.password.length <= 8) {
-        this.loginMessage.password =
-          "Password must be longer than 8 characters";
-      } else {
-        this.loginMessage.password = "";
-      }
-    },
-
-    loginMessage: {
-      handler(newMessage) {
-        if (newMessage.username === "" && newMessage.password === "") {
-          this.disableSubmit = false;
-        } else {
-          this.disableSubmit = true;
-        }
-      },
-      deep: true,
-    },
   },
 };
 </script>
-
-<style scoped>
-.username-message-enter-active,
-.username-message-leave-active,
-.password-message-enter-active,
-.password-message-leave-active {
-  transition: 0.5s ease-in-out;
-}
-
-.username-message-enter-from,
-.username-message-leave-to,
-.password-message-enter-from,
-.password-message-leave-to {
-  opacity: 0;
-}
-</style>
->
