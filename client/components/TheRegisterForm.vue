@@ -6,7 +6,7 @@
     <div
       class="login-form text-center bg-white h-fit w-[50%] rounded-2xl z-[60] min-w-[400px] max-w-[400px]"
     >
-      <form action="">
+      <form action="" @submit.prevent="register">
         <div
           class="login-form-header flex flex-col max-h-[calc(100vh-40px)] overflow-hidden pt-2 pb-4"
         >
@@ -57,7 +57,7 @@
                 <input
                   type="text"
                   name="username"
-                  id="username"
+                  id="register-username"
                   autocomplete="off"
                   placeholder="Your username"
                   required="required"
@@ -91,7 +91,7 @@
                 <input
                   :type="passwordType"
                   name="password"
-                  id="password"
+                  id="register-password"
                   autocomplete="off"
                   placeholder="Your password"
                   required="required"
@@ -145,7 +145,7 @@
                 <input
                   :type="confirmPasswordType"
                   name="password"
-                  id="password"
+                  id="register-confirm-password"
                   autocomplete="off"
                   placeholder="Your password"
                   required="required"
@@ -181,7 +181,7 @@
             <button
               class="px-4 mx-4 border-2 rounded bg-blue-500 hover:bg-blue-400 border-hidden text-base h-8"
               type="submit"
-              @submit.prevent=""
+              @submit.prevent="register"
             >
               Login
             </button>
@@ -221,6 +221,15 @@ export default {
   methods: {
     emitClose() {
       this.$emit("closeRegisterModal");
+    },
+    register() {
+      const payload = {
+        ...this.registerInfo,
+        adminAuth: adminCheck ? this.registerInfo.adminAuth : undefined,
+        adminCheck: undefined,
+        confirmPassword: undefined,
+      };
+      console.log(payload);
     },
     showPassword() {
       this.passwordType = "text";

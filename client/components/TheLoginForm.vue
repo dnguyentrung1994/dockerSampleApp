@@ -56,7 +56,7 @@
                 <input
                   type="text"
                   name="username"
-                  id="username"
+                  id="login-username"
                   autocomplete="off"
                   placeholder="Your username"
                   required="required"
@@ -102,7 +102,7 @@
                 <input
                   :type="passwordType"
                   name="password"
-                  id="password"
+                  id="login-password"
                   autocomplete="off"
                   placeholder="Your password"
                   required="required"
@@ -177,6 +177,7 @@
 </template>
 
 <script>
+import oruga from "~~/plugins/oruga";
 export default {
   data() {
     return {
@@ -212,8 +213,35 @@ export default {
         this.emitClose();
       }
     },
-    login() {
+    async login() {
       console.log(this.loginData);
+      const instance = this.$oruga.notification.open({
+        message: "logging in...",
+        position: "top",
+        variant: "info",
+        duration: 2000,
+        contentClass: "text-sm p-0",
+      });
+      let loginResponse = await fetchWithCookie(
+        "http://localhost:5000/auth/login",
+        {
+          method: "POST",
+          body: { ...this.loginData },
+        },
+        "refresh_token"
+      );
+
+      for (const header of loginResponse.raw.headers) {
+        console.log(`Name: ${header[0]}, Value:${header[1]}`);
+      }
+      await instance.close();
+      this.$oruga.notification.open({
+        message: loginResponse.data?.message ?? "",
+        position: "top",
+        variant: loginResponse.status === "OK" ? "success" : "warning",
+        duration: 1000,
+        contentClass: "text-sm p-0",
+      });
     },
   },
   watch: {
