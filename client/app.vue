@@ -1,11 +1,11 @@
 <template>
-  <div class="main">
-    <TheNavbar class="one" />
+  <div>
+    <the-navbar />
+    <NuxtPage />
   </div>
 </template>
 
-<style scoped>
-/* .main {
-  display: grid;
-} */
-</style>
+<script setup lang="ts">
+const refreshToken = useCookie<string>("refresh_token");
+console.log(refreshToken.value !== undefined);
+</script>

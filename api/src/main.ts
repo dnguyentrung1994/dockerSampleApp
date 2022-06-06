@@ -75,6 +75,7 @@ async function bootstrap() {
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,POST,PATCH,DELETE',
+    credentials: true,
   });
 
   //registering fastify cookies middleware
