@@ -4,9 +4,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { IUser } from './interface';
 
 @Entity('user')
-export class UserEntity {
+export class UserEntity implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,14 +24,11 @@ export class UserEntity {
   lastName: string;
 
   @Column({ nullable: true })
-  email?: string;
+  email: string;
 
-  @Column({ nullable: true })
-  address?: string;
-
-  @Column({ nullable: true })
-  telephone?: string;
+  @Column({ default: false })
+  isAdmin: boolean;
 
   @DeleteDateColumn()
-  deletedAt: Date;
+  deletedAt?: Date;
 }

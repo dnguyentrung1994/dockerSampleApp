@@ -4,9 +4,8 @@ export interface IUser {
   lastName: string;
   username: string;
   password: string;
-  email?: string | undefined;
-  address?: string | undefined;
-  telephone?: string | undefined;
+  email: string;
+  isAdmin: boolean;
 }
 
 export interface IRegisterUser {
@@ -14,7 +13,5 @@ export interface IRegisterUser {
   lastName: string;
   username: string;
   password: string;
-  email?: string | undefined;
-  address?: string | undefined;
-  telephone?: string | undefined;
+  email: string;
 }

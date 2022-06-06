@@ -8,16 +8,15 @@ import { ITokenPayload } from '../interface';
 import { AuthService } from '../services';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class RefreshJwtStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh',
+) {
   constructor(private readonly authService: AuthService) {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request) => {
-          return request.headers.authorization ?? '';
-        },
-      ]),
-      ignoreExpiration: false,
-      secretOrKey: configService.getAccessJWTSettings().privateKey,
+      jwtFromRequest: ExtractJwt.fromHeader('refresh-token'),
+      ignoreExpiration: true,
+      secretOrKey: configService.getRefreshJWTSettings().privateKey,
     });
   }
 

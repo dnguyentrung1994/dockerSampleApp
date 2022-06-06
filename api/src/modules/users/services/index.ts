@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { FindConditions, ObjectLiteral } from 'typeorm';
 import { UserInfoDTO, UserRegisterDTO } from '../dto';
+import { IUser } from '../interface';
 import { UserEntity } from '../user.entity';
 import { mapUserEntityToUserInfoDTO } from './mapper';
 import { UserServiceQueries } from './queries';
@@ -33,8 +34,8 @@ export class UserService {
     return mapUserEntityToUserInfoDTO(user);
   }
 
-  async addUser(userDTO: UserRegisterDTO): Promise<UserEntity> {
-    return await this.userServiceQueries.addUser(userDTO);
+  async addUser(user: Omit<IUser, 'id'>): Promise<UserEntity> {
+    return await this.userServiceQueries.addUser(user);
   }
 
   async deleteUser(
