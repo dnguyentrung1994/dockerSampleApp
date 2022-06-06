@@ -26,6 +26,7 @@ export class AuthService {
     const user = await this.userServiceQueries.getUser({ username });
     if (!user) return undefined;
     if (await comparePassword(pass, user.password)) {
+      //eslint-disable-next-line
       const { password: _, ...result } = user;
       return result;
     }
@@ -49,23 +50,13 @@ export class AuthService {
     username,
     password,
     email,
-    address,
-    telephone,
     adminAuth,
   }: UserRegisterDTO): Promise<{
-    status:
-      | 'NO_CONTACT'
-      | 'USER_EXISTS'
-      | 'ADMIN_VERIFICATION_INVALID'
-      | 'CREATED';
+    status: 'USER_EXISTS' | 'ADMIN_VERIFICATION_INVALID' | 'CREATED';
     context?: any;
   }> {
     try {
       const context: any = {};
-      if (!email && !address && !telephone)
-        return {
-          status: 'NO_CONTACT',
-        };
 
       if (await this.userServiceQueries.getUser({ username }))
         return {
@@ -88,8 +79,7 @@ export class AuthService {
         username,
         password: hashedPassword,
         email,
-        address,
-        telephone,
+        isAdmin: context.isAdmin ?? false,
       });
       context.tokens = this.login(newUser);
       context.userInfo = mapUserEntityToUserInfoDTO(newUser);
@@ -101,6 +91,8 @@ export class AuthService {
       throw error;
     }
   }
+
+  // async loginViaRefreshToken(refreshToken: string): Promise<undefined> {}
 
   async blockJwt(jwt: string, exp: number) {
     const ttl = exp - getUnixTime(new Date());

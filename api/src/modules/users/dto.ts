@@ -1,11 +1,5 @@
 import { ApiProperty, OmitType, PickType } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsMobilePhone,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IRegisterUser } from './interface';
 
 export class UserRegisterDTO implements IRegisterUser {
@@ -30,19 +24,8 @@ export class UserRegisterDTO implements IRegisterUser {
   password: string;
 
   @ApiProperty({ description: 'user password' })
-  @IsOptional()
   @IsEmail()
-  email?: string | undefined;
-
-  @ApiProperty({ description: 'user password' })
-  @IsOptional()
-  @IsString()
-  address?: string | undefined;
-
-  @ApiProperty({ description: 'user password' })
-  @IsOptional()
-  @IsMobilePhone(['ja-JP'])
-  telephone?: string | undefined;
+  email: string;
 
   @ApiProperty({ description: 'admin authentication' })
   @IsOptional()

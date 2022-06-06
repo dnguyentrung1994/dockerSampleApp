@@ -16,6 +16,7 @@ import { AuthService } from './services';
 import { Public } from './decorators';
 import { UserRegisterDTO } from '../users/dto';
 import jwtDecode from 'jwt-decode';
+import { RefreshJWTGuard } from './auth-guard/refreshToken.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +34,7 @@ export class AuthController {
   ): Promise<FastifyReply> {
     try {
       const user = req.user;
-      const tokens = await this.authService.login(user);
+      const tokens = this.authService.login(user);
 
       res.setCookie('refresh_token', tokens.refreshToken, {
         httpOnly: true,
@@ -86,7 +87,6 @@ export class AuthController {
   @Post('logout')
   async logout(@Req() req: ILoginRequest, @Res() res: FastifyReply) {
     try {
-      console.log('aaaa');
       const accessToken: IToken | undefined = req.headers.authorization
         ? jwtDecode(req.headers.authorization)
         : undefined;
@@ -115,6 +115,21 @@ export class AuthController {
     } catch (error) {
       if (error.statusCode >= 500) this.logger.error(error);
       throw error;
+    }
+  }
+
+  @Public()
+  @UseGuards(RefreshJWTGuard)
+  @Post('refresh')
+  refreshTokens(@Req() req: ILoginRequest, @Res() res: FastifyReply) {
+    try {
+      const user = req.user;
+      const tokens = this.authService.login(user);
+      return res.status(HttpStatus.OK).send({
+        ...tokens,
+      });
+    } catch (error) {
+      if (error?.statusCode >= 500) console.error(error);
     }
   }
 }
