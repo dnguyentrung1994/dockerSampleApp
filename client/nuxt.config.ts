@@ -4,4 +4,7 @@ import { defineNuxtConfig } from "nuxt";
 export default defineNuxtConfig({
   plugins: [{ src: "~/plugins/oruga.ts" }],
   buildModules: ["@nuxtjs/tailwindcss"],
+  build: {
+    transpile: [/oruga/],
+  },
 });

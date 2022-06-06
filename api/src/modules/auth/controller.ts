@@ -42,7 +42,7 @@ export class AuthController {
       });
       return res.status(HttpStatus.OK).send({
         message: 'Login successfully!',
-        accessToken: tokens.accessToken,
+        ...tokens,
         ...user,
       });
     } catch (error) {
@@ -75,7 +75,7 @@ export class AuthController {
         },
       );
       return res.status(HttpStatus.OK).send({
-        accessToken: registerResult.context.tokens.accessToken,
+        ...registerResult.context.tokens,
         userInfo: registerResult.context.userInfo,
       });
     } catch (error: any) {
@@ -127,6 +127,7 @@ export class AuthController {
       const tokens = this.authService.login(user);
       return res.status(HttpStatus.OK).send({
         ...tokens,
+        ...user,
       });
     } catch (error) {
       if (error?.statusCode >= 500) console.error(error);
