@@ -3,6 +3,7 @@ import { toast, Slide, Flip, Zoom } from "react-toastify";
 import { FetchStatus } from "../interfaces/enums";
 import { LoginInterface, UserState } from "../interfaces/user";
 import { APIPost } from "../utils/api-calls";
+import HttpApi from "../utils/api-calls/useHeaderInterceptor";
 
 const initialState: UserState = {
   id: "",
@@ -74,4 +75,17 @@ export const LoginAsync =
     } catch (error) {}
   };
 
+export const refreshTokens = () => async (dispatch: Dispatch) => {
+  try {
+    const refreshTokenResponse = await HttpApi.post(
+      `${process.env.REACT_APP_API_ROUTE}auth/refresh`,
+      null,
+      {
+        withCredentials: true,
+      }
+    );
+    if (refreshTokenResponse) {
+    }
+  } catch (error) {}
+};
 export default userSlice.reducer;
