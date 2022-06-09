@@ -1,4 +1,5 @@
 {
+  "proxy": "http://localhost:5000",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -15,9 +16,11 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "axios": "^0.27.2",
+    "clsx": "^1.1.1",
     "dayjs": "^1.11.3",
     "jwt-decode": "^3.1.2",
     "react": "^18.1.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.31.3",
     "react-redux": "^8.0.2",
@@ -54,7 +57,9 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",
+    "craco-css-modules": "^1.0.1",
     "postcss": "^8.4.14",
-    "tailwindcss": "^3.0.24"
+    "tailwindcss": "^3.0.24",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

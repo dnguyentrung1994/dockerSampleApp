@@ -76,13 +76,11 @@ async function bootstrap() {
     origin: true,
     methods: 'GET,HEAD,PUT,POST,PATCH,DELETE',
     credentials: true,
+    exposedHeaders: 'set-cookie',
   });
 
-  //registering fastify cookies middleware
-  app.register(fastifyCookie);
-
   //registering fastify helmet middleware
-  app.register(fastifyHelmet, {
+  await app.register(fastifyHelmet, {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: [`'self'`],
@@ -91,6 +89,11 @@ async function bootstrap() {
         scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
       },
     },
+  });
+
+  //  register Fastify-cookie as a plugin
+  await app.register(fastifyCookie, {
+    secret: configService.getFastifySecret(),
   });
 
   //globalPipes for validation and error handling

@@ -33,7 +33,10 @@ export const LoginAsync =
       transition: Slide,
     });
     try {
-      const response = await HttpApi.post("auth/login", loginData);
+      const response = await HttpApi.post("auth/login", loginData, {
+        withCredentials: true,
+      });
+      console.log(response.headers);
       dispatch(
         setUserState({
           ...response.data,
@@ -44,6 +47,7 @@ export const LoginAsync =
         isLoading: false,
         render: "Logged in!",
         transition: Flip,
+        autoClose: 1000,
       });
       return response;
     } catch (error: unknown) {
@@ -54,6 +58,7 @@ export const LoginAsync =
             isLoading: false,
             render: "Failed to Login!",
             transition: Flip,
+            autoClose: 1000,
           });
           throw error.response;
         } else if (error.request) {
@@ -62,6 +67,7 @@ export const LoginAsync =
             isLoading: false,
             render: "No responds from server!",
             transition: Flip,
+            autoClose: 1000,
           });
           throw error.request;
         }
@@ -70,6 +76,7 @@ export const LoginAsync =
           type: "error",
           isLoading: false,
           render: "Unknown Error",
+          autoClose: 1000,
           transition: Zoom,
         });
         throw error;
@@ -79,17 +86,16 @@ export const LoginAsync =
 
 export const refreshToken = () => async (dispatch: Dispatch) => {
   try {
-    const response = await HttpApi.post("/auth/refresh", null, {
+    const response = await HttpApi.post("auth/refresh", null, {
       withCredentials: true,
     });
 
+    console.log(response);
     dispatch(
       setUserState({
         ...response.data,
       } as UserState)
     );
-
-    return response;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {

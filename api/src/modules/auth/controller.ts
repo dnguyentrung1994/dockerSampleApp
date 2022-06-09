@@ -30,15 +30,17 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   async login(
     @Req() req: ILoginRequest,
-    @Res() res: FastifyReply,
+    @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<FastifyReply> {
     try {
       const user = req.user;
+      console.log(req.cookies);
       const tokens = this.authService.login(user);
-
-      res.setCookie('refresh_token', tokens.refreshToken, {
+      console.log(tokens.refreshToken);
+      res.setCookie('refreshToken', tokens.refreshToken, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 24 * 60 * 60,
+        path: 'api/refresh-token',
       });
       return res.status(HttpStatus.OK).send({
         message: 'Login successfully!',
@@ -55,7 +57,7 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() userRegisterDTO: UserRegisterDTO,
-    @Res() res: FastifyReply,
+    @Res({ passthrough: true }) res: FastifyReply,
   ) {
     try {
       const registerResult = await this.authService.registerUser(
@@ -70,8 +72,10 @@ export class AuthController {
         registerResult.context.tokens.refreshToken,
         {
           httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000,
+          maxAge: 24 * 60 * 60,
           path: 'api/refresh-token',
+          sameSite: 'lax',
+          secure: false,
         },
       );
       return res.status(HttpStatus.OK).send({
@@ -85,7 +89,10 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() req: ILoginRequest, @Res() res: FastifyReply) {
+  async logout(
+    @Req() req: ILoginRequest,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ) {
     try {
       const accessToken: IToken | undefined = req.headers.authorization
         ? jwtDecode(req.headers.authorization)
@@ -121,10 +128,19 @@ export class AuthController {
   @Public()
   @UseGuards(RefreshJWTGuard)
   @Post('refresh')
-  refreshTokens(@Req() req: ILoginRequest, @Res() res: FastifyReply) {
+  refreshTokens(
+    @Req() req: ILoginRequest,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ) {
     try {
       const user = req.user;
+      console.log(req.cookies);
       const tokens = this.authService.login(user);
+      res.setCookie('refreshToken', tokens.refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60,
+        path: 'api/refresh-token',
+      });
       return res.status(HttpStatus.OK).send({
         ...tokens,
         ...user,

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { LoginAsync } from "../../store/user.store";
 import { useAppDispatch } from "../../store";
 import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
+import Styles from "./Login.module.css";
 
 const LoginForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -36,9 +38,7 @@ const LoginForm: React.FC = () => {
   return (
     <div className=" bg-slate-100 w-screen h-screen flex align-middle justify-center">
       <div className="m-auto max-h-[70vh] max-w-full min-h-[350px] min-w-[60%] md:min-w-[45%] lg:min-w-[30%] h-fit w-fit bg-white shadow-lg rounded-lg">
-        <p className=" text-2xl italic w-fit m-auto pt-3 pb-1 font-bold underline-offset-2">
-          Login
-        </p>
+        <p className={clsx(Styles.formHeader)}>Login</p>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="border-t border-gray-300 shadow-inner"

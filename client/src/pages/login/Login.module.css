@@ -1,0 +1,3 @@
+.formHeader {
+  @apply text-2xl italic w-fit m-auto pt-3 pb-1 font-bold underline-offset-2;
+}

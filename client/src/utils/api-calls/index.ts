@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const HttpApi = axios.create({
-  baseURL: process.env.REACT_APP_API_ROUTE,
+  baseURL: "/",
 });
 
 export default HttpApi;

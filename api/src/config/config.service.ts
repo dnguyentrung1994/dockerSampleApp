@@ -69,6 +69,10 @@ class ConfigService {
     return Number(this.getRequiredValue('API_PORT'));
   }
 
+  public getFastifySecret() {
+    return this.getRequiredValue('FASTIFY_SECRET');
+  }
+
   public isProductionMode(): boolean {
     return this.getOptionalValue('API_MODE') !== 'DEV';
   }
