@@ -1,9 +1,8 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 import { toast, Slide, Flip, Zoom } from "react-toastify";
-import { FetchStatus } from "../interfaces/enums";
 import { LoginInterface, UserState } from "../interfaces/user";
-import { APIPost } from "../utils/api-calls";
-import HttpApi from "../utils/api-calls/useHeaderInterceptor";
+import HttpApi from "../utils/api-calls";
 
 const initialState: UserState = {
   id: "",
@@ -29,63 +28,79 @@ export const { setUserState } = userSlice.actions;
 
 export const LoginAsync =
   (loginData: LoginInterface) => async (dispatch: Dispatch) => {
+    const id = toast.loading("Logging in...", {
+      position: "top-center",
+      transition: Slide,
+    });
     try {
-      const id = toast.loading("Logging in...", {
-        position: "top-center",
-        transition: Slide,
+      const response = await HttpApi.post("auth/login", loginData);
+      dispatch(
+        setUserState({
+          ...response.data,
+        })
+      );
+      toast.update(id, {
+        type: "success",
+        isLoading: false,
+        render: "Logged in!",
+        transition: Flip,
       });
-      const response = await APIPost("auth/login", loginData);
-      switch (response.status) {
-        case FetchStatus.OK: {
-          dispatch(
-            setUserState({
-              ...response.data,
-            })
-          );
-          toast.update(id, {
-            type: "success",
-            isLoading: false,
-            render: "Logged in!",
-            transition: Flip,
-          });
-          return response;
-        }
-
-        case FetchStatus.BAD_RESPONSE:
-        case FetchStatus.NO_RESPONSE: {
+      return response;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
           toast.update(id, {
             type: "warning",
             isLoading: false,
-            render: response.data.message ?? "Failed to login",
+            render: "Failed to Login!",
             transition: Flip,
           });
-          return response;
-        }
-
-        default: {
+          throw error.response;
+        } else if (error.request) {
           toast.update(id, {
-            type: "error",
+            type: "info",
             isLoading: false,
-            render: "Internal Error!!!",
-            transition: Zoom,
+            render: "No responds from server!",
+            transition: Flip,
           });
-          return response;
+          throw error.request;
         }
+      } else {
+        toast.update(id, {
+          type: "error",
+          isLoading: false,
+          render: "Unknown Error",
+          transition: Zoom,
+        });
+        throw error;
       }
-    } catch (error) {}
+    }
   };
 
-export const refreshTokens = () => async (dispatch: Dispatch) => {
+export const refreshToken = () => async (dispatch: Dispatch) => {
   try {
-    const refreshTokenResponse = await HttpApi.post(
-      `${process.env.REACT_APP_API_ROUTE}auth/refresh`,
-      null,
-      {
-        withCredentials: true,
-      }
+    const response = await HttpApi.post("/auth/refresh", null, {
+      withCredentials: true,
+    });
+
+    dispatch(
+      setUserState({
+        ...response.data,
+      } as UserState)
     );
-    if (refreshTokenResponse) {
+
+    return response;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw error.response;
+      } else if (error.request) {
+        throw error.request;
+      }
+    } else {
+      throw error;
     }
-  } catch (error) {}
+  }
 };
+
 export default userSlice.reducer;

@@ -3,12 +3,15 @@ import { createRoot } from "react-dom/client";
 import store from "./store";
 import { Provider } from "react-redux";
 import App from "./App";
-import { Navbar } from "./components/common/Navbar";
+import setupInterceptor from "./utils/api-calls/setupInterceptor";
+import { BrowserRouter } from "react-router-dom";
 
-const root = createRoot(document.getElementById("root") as HTMLDivElement);
+setupInterceptor(store);
+const root = createRoot(document.getElementById("root")!);
 root.render(
   <Provider store={store}>
-    <Navbar />
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
 );

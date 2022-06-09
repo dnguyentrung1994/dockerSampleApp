@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../index.css";
 import { useAppState } from "../../store";
 
 export const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const [expandSideBar, useExpandSideBar] = useState<Boolean>(false);
 
   const { user } = useAppState((state) => state);
@@ -29,14 +31,23 @@ export const Navbar: React.FC = () => {
           />
         </svg>
       </button>
-      <div className="absolute right-2 w-fit h-[40px]">
+      <div className="absolute right-2  h-[40px] space-x-0.5 bg-white flex">
         {!user.accessToken ? (
-          <div className=" flex flex-row align-middle h-[40px]">
-            <button className="text-white hover:bg-slate-600 hover:underline hover:duration-150 hover:ease-in-out px-2 border-r border-solid border-white">
-              place
+          <div className=" flex flex-row align-middle h-[40px] ">
+            <button
+              className={`text-white px-2 bg-black min-w-[70px]
+                hover:bg-slate-600 hover:scale-110 hover:-translate-y-[2px] duration-150 ease-in-out 
+                `}
+              onClick={() => navigate("/account")}
+            >
+              Login
             </button>
-            <button className="text-white hover:bg-slate-600 hover:underline hover:duration-150 ease-in-out px-2">
-              holder
+            <button
+              className={`text-white px-2 bg-black min-w-[70px]
+                hover:bg-slate-600 hover:scale-110 hover:-translate-y-[2px] duration-150 ease-in-out 
+                `}
+            >
+              PHolder
             </button>
           </div>
         ) : (
