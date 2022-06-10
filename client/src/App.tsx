@@ -26,6 +26,10 @@ const App = () => {
         <Route path="/account" element={<LayoutsWithoutNavbar />}>
           <Route index element={<LoginForm />} />
           <Route path="register" element={<SignUpForm />} />
+          <Route
+            path="register/admin"
+            element={<SignUpForm asAdmin={true} />}
+          />
         </Route>
       </Routes>
     </div>

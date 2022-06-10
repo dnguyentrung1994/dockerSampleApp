@@ -5,13 +5,18 @@ import Styles from "./Stepper.module.css";
 
 type StepperProps = {
   currentStep: number;
+  header?: string;
   steps: {
     description: string;
     onClick?: () => void;
   }[];
 };
 
-const Stepper: React.FC<StepperProps> = ({ currentStep = 1, steps }) => {
+const Stepper: React.FC<StepperProps> = ({
+  currentStep = 1,
+  steps,
+  header,
+}) => {
   const baseZeroActiveStep =
     currentStep < 0
       ? 0
@@ -50,14 +55,16 @@ const Stepper: React.FC<StepperProps> = ({ currentStep = 1, steps }) => {
         {stepperSteps.map((step, index) => (
           <Step
             key={index}
-            lastStep={index === steps.length}
+            lastStep={index === steps.length - 1}
             stepState={step}
           />
         ))}
       </div>
-      <div className=" text-3xl justify-self-center self-center">
-        {steps[baseZeroActiveStep].description}
-      </div>
+      {header && (
+        <div className=" text-3xl justify-self-center self-center pt-8 italic">
+          {header}
+        </div>
+      )}
     </div>
   );
 };

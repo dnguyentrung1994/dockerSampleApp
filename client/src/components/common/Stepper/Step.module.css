@@ -7,7 +7,7 @@
 }
 
 .stepContents {
-  @apply relative flex flex-col items-center text-teal-600;
+  @apply relative flex flex-col items-center text-teal-600 justify-self-center;
 }
 
 .stepOverlay {
