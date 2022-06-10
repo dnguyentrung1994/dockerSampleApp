@@ -33,7 +33,7 @@ const Step: React.FC<StepProps> = ({ key, stepState, lastStep }) => {
             <span className={clsx(Styles.completedStep)}>✓</span>
           ) : (
             stepState.highlighted && (
-              <div>
+              <div className="relative">
                 <div className={clsx(Styles.highlightedStep)}></div>
                 <div className={clsx(Styles.highlightedStepPing)}></div>
               </div>
