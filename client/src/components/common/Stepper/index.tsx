@@ -45,10 +45,19 @@ const Stepper: React.FC<StepperProps> = ({ currentStep = 1, steps }) => {
     }));
   };
   return (
-    <div className={clsx(Styles.stepperContainer)}>
-      {stepperSteps.map((step, index) => (
-        <Step key={index} lastStep={index === steps.length} stepState={step} />
-      ))}
+    <div className={clsx(Styles.component)}>
+      <div className="flex flex-row">
+        {stepperSteps.map((step, index) => (
+          <Step
+            key={index}
+            lastStep={index === steps.length}
+            stepState={step}
+          />
+        ))}
+      </div>
+      <div className=" text-3xl justify-self-center self-center">
+        {steps[baseZeroActiveStep].description}
+      </div>
     </div>
   );
 };

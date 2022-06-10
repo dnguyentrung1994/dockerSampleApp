@@ -1,3 +1,7 @@
+.component {
+  @apply flex flex-col;
+}
+
 .stepperContainer {
   @apply mx-4 p-4 flex justify-between items-center;
 }
