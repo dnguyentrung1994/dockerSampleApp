@@ -8,7 +8,7 @@ import { useAppDispatch } from "./store";
 import { refreshToken } from "./store/user.store";
 import LayoutsWithNavbar from "./layouts/WithNavbar";
 import LayoutsWithoutNavbar from "./layouts/WithoutNavbar";
-import SignUpForm from "./pages/signup";
+import SignUpForm from "./pages/signUp";
 
 const App = () => {
   const dispatch = useAppDispatch();
