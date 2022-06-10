@@ -1,0 +1,24 @@
+.navbarContainer {
+  @apply relative flex min-h-[40px] h-[40px] bg-black align-middle z-20;
+}
+
+.sidebarToggleButton {
+  @apply cursor-default;
+}
+
+.sidebarToggleButtonIcon {
+  @apply h-6 w-6 absolute left-2 top-2;
+}
+
+.accountSection {
+  @apply absolute right-2  h-[40px] space-x-0.5 bg-white flex;
+}
+
+.guestAccountSection {
+  @apply flex flex-row align-middle h-[40px];
+}
+
+.guestLoginButton {
+  @apply text-white px-2 bg-black min-w-[70px]
+  hover:bg-slate-600 hover:scale-110 hover:-translate-y-[2px] duration-150 ease-in-out;
+}

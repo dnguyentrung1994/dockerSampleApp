@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { Navbar } from "./components/common/Navbar";
+import { Route, Routes } from "react-router-dom";
 import "./index.css";
 import NotFoundPage from "./pages/404";
 import Introduction from "./pages/introduction";
 import LoginForm from "./pages/login";
-import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "./store";
 import { refreshToken } from "./store/user.store";
+import LayoutsWithNavbar from "./layouts/WithNavbar";
+import LayoutsWithoutNavbar from "./layouts/WithoutNavbar";
+import SignUpForm from "./pages/signup";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -16,19 +16,6 @@ const App = () => {
     dispatch(refreshToken());
   }, [dispatch]);
 
-  const LayoutsWithNavbar = () => (
-    <div>
-      <Navbar />
-      <Outlet />
-      <ToastContainer />
-    </div>
-  );
-  const LayoutsWithoutNavbar = () => (
-    <div>
-      <Outlet />
-      <ToastContainer />
-    </div>
-  );
   return (
     <div>
       <Routes>
@@ -38,6 +25,7 @@ const App = () => {
         </Route>
         <Route path="/account" element={<LayoutsWithoutNavbar />}>
           <Route index element={<LoginForm />} />
+          <Route path="register" element={<SignUpForm />} />
         </Route>
       </Routes>
     </div>

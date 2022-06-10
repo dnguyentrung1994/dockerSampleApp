@@ -1,3 +1,108 @@
-.formHeader {
+.overlay {
+  @apply bg-slate-100 w-screen h-screen flex align-middle justify-center;
+}
+
+.formContainer {
+  @apply m-auto max-h-[70vh] max-w-full min-h-[350px] min-w-[60%] md:min-w-[45%] lg:min-w-[30%] h-fit w-fit bg-white shadow-lg rounded-lg;
+}
+
+.formHeaderTitle {
   @apply text-2xl italic w-fit m-auto pt-3 pb-1 font-bold underline-offset-2;
+}
+
+.formBody {
+  @apply border-t border-gray-300 shadow-inner h-fit;
+}
+
+.inputContainer {
+  @apply pt-2 m-auto w-[90%] min-w-[200px] max-w-[50vw];
+}
+
+.passwordInput {
+  @apply relative;
+}
+
+.togglePasswordInputSection {
+  @apply absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5;
+}
+
+.togglePasswordIconBase {
+  @apply text-gray-700 h-6 w-6;
+}
+
+.togglePasswordIconShown {
+  composes: togglePasswordIconBase;
+  @apply block;
+}
+
+.togglePasswordIconHidden {
+  composes: togglePasswordIconBase;
+  @apply hidden;
+}
+
+.inputTitle {
+  @apply text-lg italic;
+}
+
+.inputBase {
+  @apply text-base block px-3 py-2 rounded-lg w-full
+  bg-white border-2 placeholder-gray-600 shadow-md 
+  focus:placeholder-gray-500 focus:bg-white focus:outline-none;
+}
+
+.inputNormal {
+  composes: inputBase;
+  @apply border-gray-300 focus:border-gray-600;
+}
+
+.inputError {
+  composes: inputBase;
+  @apply border-red-400 focus:border-red-600;
+}
+
+.inputMessageBase {
+  @apply text-xs text-red-400 italic pl-[5%] py-2;
+}
+
+.inputMessageHidden {
+  composes: inputMessageBase;
+  @apply h-0;
+}
+
+.inputMessageShow {
+  composes: inputMessageBase;
+  @apply h-fit;
+}
+
+.formFooter {
+  @apply border-t border-gray-300 mt-4 w-full flex flex-col sm:flex-row-reverse sm:justify-between;
+}
+
+.submitButtonBase {
+  @apply border-2 flex flex-row transition duration-200
+  cursor-default w-1/4 md:w-1/5 lg:w-1/6 min-w-[88px] 
+  self-end mr-2 sm:mr-4 md:mr-6 lg:mr-[10%] shadow-lg 
+  rounded-lg p-[2px] my-2 focus:outline-none text-ellipsis overflow-hidden;
+}
+
+.submitButtonEnabled {
+  composes: submitButtonBase;
+  @apply bg-blue-400 hover:bg-indigo-500 hover:-translate-y-1 hover:scale-110;
+}
+
+.submitButtonDisabled {
+  composes: submitButtonBase;
+  @apply bg-gray-400;
+}
+
+.submitButtonIcon {
+  @apply self-start pl-1 h-6 w-6;
+}
+
+.submitButtonLabel {
+  @apply w-fit m-auto pr-1 text-base text-center;
+}
+
+.registerButton {
+  @apply self-start sm:self-end  pl-1 sm:pl-2 md:pl-4 lg:pl-[5%]  lg:justify-self-end cursor-default hover:underline text-blue-500 overflow-hidden text-ellipsis;
 }

@@ -1,0 +1,51 @@
+.stepContainer {
+  @apply w-full flex items-center;
+}
+
+.lastStepContainer {
+  @apply flex items-center;
+}
+
+.stepContents {
+  @apply relative flex flex-col items-center text-teal-600;
+}
+
+.stepOverlay {
+  @apply flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300;
+}
+
+.stepBase {
+  @apply rounded-full transition duration-500 ease-in-out border-2 border-gray-300 h-12 w-12 flex items-center justify-center py-3 bg-white;
+}
+
+.stepSelected {
+  composes: stepBase;
+  @apply bg-green-600 text-white font-bold;
+}
+
+.completedStep {
+  @apply text-white font-bold text-xl;
+}
+
+.highlightedStep {
+  @apply absolute rounded-full  transition duration-500 ease-in-out border-2 border-none h-6 w-6 flex items-center justify-center py-3 z-10 
+  bg-green-500;
+}
+.highlightedStepPing {
+  composes: highlightedStep;
+  @apply animate-ping z-[5];
+}
+
+.stepDescriptionBase {
+  @apply absolute top-0  text-center mt-16 w-32 text-xs font-medium uppercase;
+}
+
+.stepDescriptionNormal {
+  composes: stepDescriptionBase;
+  @apply text-gray-400;
+}
+
+.stepDescriptionHighlighted {
+  composes: stepDescriptionBase;
+  @apply text-gray-900;
+}

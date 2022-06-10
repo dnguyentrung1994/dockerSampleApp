@@ -1,7 +1,8 @@
+import clsx from "clsx";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../index.css";
-import { useAppState } from "../../store";
+import { useAppState } from "../../../store";
+import Styles from "./Navbar.module.css";
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -13,11 +14,11 @@ export const Navbar: React.FC = () => {
     console.log(expandSideBar);
   };
   return (
-    <nav className=" relative flex min-h-[40px] h-[40px] bg-black align-middle z-20">
-      <button className=" cursor-default">
+    <nav className={clsx(Styles.navbarContainer)}>
+      <button className={clsx(Styles.sidebarToggleButton)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 absolute left-2 top-2"
+          className={clsx(Styles.sidebarToggleButtonIcon)}
           fill="none"
           viewBox="0 0 24 24"
           stroke="white"
@@ -31,24 +32,16 @@ export const Navbar: React.FC = () => {
           />
         </svg>
       </button>
-      <div className="absolute right-2  h-[40px] space-x-0.5 bg-white flex">
+      <div className={clsx(Styles.accountSection)}>
         {!user.accessToken ? (
-          <div className=" flex flex-row align-middle h-[40px] ">
+          <div className={clsx(Styles.guestAccountSection)}>
             <button
-              className={`text-white px-2 bg-black min-w-[70px]
-                hover:bg-slate-600 hover:scale-110 hover:-translate-y-[2px] duration-150 ease-in-out 
-                `}
+              className={clsx(Styles.guestLoginButton)}
               onClick={() => navigate("/account")}
             >
               Login
             </button>
-            <button
-              className={`text-white px-2 bg-black min-w-[70px]
-                hover:bg-slate-600 hover:scale-110 hover:-translate-y-[2px] duration-150 ease-in-out 
-                `}
-            >
-              PHolder
-            </button>
+            <button className={clsx(Styles.guestLoginButton)}>PHolder</button>
           </div>
         ) : (
           <div></div>
